@@ -20,16 +20,16 @@ daily_steps <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 mean_steps <- mean(daily_steps,na.rm=TRUE)
 median_steps <- median(daily_steps,na.rm=TRUE)
 ```
-The mean number of steps in a day is `r mean_steps` and median of the total number of steps in a day is `r median_steps`.
+The mean number of steps in a day is `r format(mean_steps,scientific=F)` and median of the total number of steps in a day is `r format(median_steps,scientific=F)`.
 Following is a histogram of the total number of steps in a day.
-``` {r histogram of daily steps}
+``` {r}
 hist(daily_steps,xlab="Total number of steps in a day")
 ```
 
 ### What is the average daily activity pattern?
 
 Following is the time series plot of the average number of steps (averaged across each day) in each 5-minute interval.
-``` {r average daily pattern}
+``` {r}
 avg_interval <- tapply(activity$steps,activity$interval,mean,na.rm=TRUE)
 plot(names(avg_interval),avg_interval,type="l",xlab="5 minute interval",ylab="Average number of steps")
 ```
@@ -54,7 +54,7 @@ for (i in na_index)
 new_daily_steps <- tapply(activity$new_steps,activity$date,sum,na.rm=TRUE)
 ```
 Following is the histogram after filling the missing values.
-```{r Histogram of daily steps after imputing missing values}
+```{r}
 hist(new_daily_steps,xlab="Total number of steps in a day")
 ```
 
@@ -62,16 +62,18 @@ hist(new_daily_steps,xlab="Total number of steps in a day")
 new_mean_steps <- mean(new_daily_steps)
 new_median_steps <- median(new_daily_steps)
 ```
-The average of total steps in a day in the new dataset (after imputing missing values) is `r new_mean_steps` and the median is `r new_median_steps`.
+The average of total steps in a day in the new dataset (after imputing missing values) is `r format(new_mean_steps,scientific=F)` and the median is `r format(new_median_steps,scientific=F)`.
 Both values are higher than the estimates calculated before imputing the missing values.
 
 ### Are there differences in activity patterns between weekdays and weekends?
 Following is the comparison of activity patterns on weekdays and weekends.
-``` {r panel plot weekdays}
+``` {r}
 library(dplyr)
 activity <- mutate(activity,day=ifelse(weekdays(date)=="Saturday"|weekdays(date)=="Sunday","Weekend","Weekday"))
 avg_weekday <- tapply(activity$new_steps,list(activity$interval,activity$day),mean)
-par(mfrow=c(2,1),mar=c(4,2,2,1))
-plot(as.numeric(rownames(avg_weekday)),avg_weekday[,"Weekend"],type="l",xlab="5-minute interval",ylab="Number of steps",main="Weekend")
-plot(as.numeric(rownames(avg_weekday)),avg_weekday[,"Weekday"],type="l",xlab="5-minute interval",ylab="Number of steps",main="Weekday")
+library(reshape2)
+weekavg <- melt(avg_weekday)
+colnames(weekavg) <- c("Interval","Day","Steps")
+library(ggplot2)
+ggplot(data=weekavg,aes(x=Interval,y=Steps,color=Day)) + geom_line() + xlab("5-minute interval") + ylab("Number of steps") + facet_wrap(~Day,ncol=1,nrow=2)
 ```

@@ -19,7 +19,7 @@ daily_steps <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 mean_steps <- mean(daily_steps,na.rm=TRUE)
 median_steps <- median(daily_steps,na.rm=TRUE)
 ```
-The mean number of steps in a day is 1.840671\times 10^{4} and median of the total number of steps in a day is 20525.
+The mean number of steps in a day is 18406.71 and median of the total number of steps in a day is 20525.
 Following is a histogram of the total number of steps in a day.
 
 ```r
@@ -73,7 +73,7 @@ hist(new_daily_steps,xlab="Total number of steps in a day")
 new_mean_steps <- mean(new_daily_steps)
 new_median_steps <- median(new_daily_steps)
 ```
-The average of total steps in a day in the new dataset (after imputing missing values) is 2.1185081\times 10^{4} and the median is 2.1641\times 10^{4}.
+The average of total steps in a day in the new dataset (after imputing missing values) is 21185.08 and the median is 21641.
 Both values are higher than the estimates calculated before imputing the missing values.
 
 ### Are there differences in activity patterns between weekdays and weekends?
@@ -103,9 +103,11 @@ library(dplyr)
 ```r
 activity <- mutate(activity,day=ifelse(weekdays(date)=="Saturday"|weekdays(date)=="Sunday","Weekend","Weekday"))
 avg_weekday <- tapply(activity$new_steps,list(activity$interval,activity$day),mean)
-par(mfrow=c(2,1),mar=c(4,2,2,1))
-plot(as.numeric(rownames(avg_weekday)),avg_weekday[,"Weekend"],type="l",xlab="5-minute interval",ylab="Number of steps",main="Weekend")
-plot(as.numeric(rownames(avg_weekday)),avg_weekday[,"Weekday"],type="l",xlab="5-minute interval",ylab="Number of steps",main="Weekday")
+library(reshape2)
+weekavg <- melt(avg_weekday)
+colnames(weekavg) <- c("Interval","Day","Steps")
+library(ggplot2)
+ggplot(data=weekavg,aes(x=Interval,y=Steps,color=Day)) + geom_line() + xlab("5-minute interval") + ylab("Number of steps") + facet_wrap(~Day,ncol=1,nrow=2)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
