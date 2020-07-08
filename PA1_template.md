@@ -26,7 +26,7 @@ Following is a histogram of the total number of steps in a day.
 hist(daily_steps,xlab="Total number of steps in a day")
 ```
 
-![](PA1_template_files/figure-html/histogram of daily steps-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ### What is the average daily activity pattern?
 
@@ -37,7 +37,7 @@ avg_interval <- tapply(activity$steps,activity$interval,mean,na.rm=TRUE)
 plot(names(avg_interval),avg_interval,type="l",xlab="5 minute interval",ylab="Average number of steps")
 ```
 
-![](PA1_template_files/figure-html/average daily pattern-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 
 ```r
@@ -66,7 +66,7 @@ Following is the histogram after filling the missing values.
 hist(new_daily_steps,xlab="Total number of steps in a day")
 ```
 
-![](PA1_template_files/figure-html/Histogram of daily steps after imputing missing values-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 
 ```r
@@ -108,4 +108,4 @@ plot(as.numeric(rownames(avg_weekday)),avg_weekday[,"Weekend"],type="l",xlab="5-
 plot(as.numeric(rownames(avg_weekday)),avg_weekday[,"Weekday"],type="l",xlab="5-minute interval",ylab="Number of steps",main="Weekday")
 ```
 
-![](PA1_template_files/figure-html/panel plot weekdays-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
